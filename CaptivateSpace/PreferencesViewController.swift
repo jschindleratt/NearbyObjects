@@ -25,14 +25,15 @@ class PreferencesViewController: UIViewController {
         sldYears.setValue(Float(numberOfYears), animated: true)
     }
     
-    @IBAction func sliderValueChangedYears(_ sender: UISlider) {
-        let currentValue = Float(sender.value)
-        lblYears.text = "\(currentValue)"
-        UserDefaults.standard.set(currentValue, forKey: "numberOfYears")
-    }
     @IBAction func sliderValueChanged(_ sender: UISlider) {
+        var key:String = "lunarDistances"
+        var label:UILabel = lblLunarLengths
+        if (sender == sldYears) {
+            key = "numberOfYears"
+            label = lblYears
+        }
         let currentValue = Float(sender.value)
-        lblLunarLengths.text = "\(currentValue)"
-        UserDefaults.standard.set(currentValue, forKey: "lunarDistances")
+        label.text = "\(currentValue)"
+        UserDefaults.standard.set(currentValue, forKey: key)
     }
 }

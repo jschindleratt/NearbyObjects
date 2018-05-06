@@ -10,27 +10,40 @@ import CoreData
 import UIKit
 
 class MainTableViewController: UITableViewController, OptionButtonsDelegate {
-
+    
+    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    
     var objects = [NearbyObject]()
     var dataController:DataController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.addSubview(activityIndicator)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = UIColor.black
+        let horizontalConstraint = NSLayoutConstraint(item: activityIndicator, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0)
+        view.addConstraint(horizontalConstraint)
+        let verticalConstraint = NSLayoutConstraint(item: activityIndicator, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0)
+        view.addConstraint(verticalConstraint)
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getObjects()
     }
 
     private func getObjects() {
+        activityIndicator.startAnimating()
         let _ = SIClient.sharedInstance.getObjects() { (data, error) in
             if error == nil {
                 self.objects = data as! [NearbyObject]
                 performUIUpdatesOnMain {
+                    self.activityIndicator.stopAnimating()
                     self.tableView.reloadData()
                 }
             } else {
+                self.activityIndicator.stopAnimating()
                 let alert = UIAlertController(title: "Alert", message: "There was a problem retrieving Nearby Object info!", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
@@ -66,8 +79,7 @@ class MainTableViewController: UITableViewController, OptionButtonsDelegate {
             let fetchRequest:NSFetchRequest<NearbyObjs> = NearbyObjs.fetchRequest()
             let predicate = NSPredicate(format: "fullname = %@", unwrapped)
             fetchRequest.predicate = predicate
-            if let result = try? dataController.viewContext.fetch(fetchRequest)
-            {
+            if let result = try? dataController.viewContext.fetch(fetchRequest) {
                 if result.count == 0 {
                     let nearbyOjct = NearbyObjs(context: dataController.viewContext)
                     let dateFormatter = DateFormatter()
@@ -86,7 +98,6 @@ class MainTableViewController: UITableViewController, OptionButtonsDelegate {
                 self.present(alert, animated: true, completion: nil)
             }
         }
-        
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
