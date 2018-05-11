@@ -10,6 +10,8 @@ import Foundation
 import CoreData
 
 class DataController {
+    var backgroundContext:NSManagedObjectContext!
+    
     //convenience property to access the context
     var viewContext:NSManagedObjectContext {
         return persistentContaner.viewContext
@@ -27,7 +29,15 @@ class DataController {
             guard error == nil else {
                 fatalError(error!.localizedDescription)
             }
+            self.configureContext()
             completion?()
         }
+    }
+    func configureContext() {
+        backgroundContext = persistentContaner.newBackgroundContext()
+        viewContext.automaticallyMergesChangesFromParent = true
+        backgroundContext.automaticallyMergesChangesFromParent = true
+        backgroundContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        viewContext.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump
     }
 }

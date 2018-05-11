@@ -44,19 +44,19 @@ class SIClient {
             }
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                sendError("There was an error with your request: \(error!)",code: 1)
+                sendError("There was an error with your request: \(error!)", code: 1)
                 return
             }
             
             /* GUARD: Did we get a successful 2XX response? */
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                sendError("Your request returned a status code other than 2xx!",code: 2)
+                sendError("Your request returned a status code other than 2xx!", code: 2)
                 return
             }
             
             /* GUARD: Was there any data returned? */
             guard let data = data else {
-                sendError("No data was returned by the request!",code: 3)
+                sendError("No data was returned by the request!", code: 3)
                 return
             }
             
@@ -65,20 +65,20 @@ class SIClient {
             do {
                 parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:AnyObject]
             } catch {
-                sendError("Could not parse the data as JSON: '\(data)'",code: 4)
+                sendError("Could not parse the data as JSON: '\(data)'", code: 4)
                 return
             }
 
             /* GUARD: Any matches? */
             guard let count = parsedResult[SIClient.NasaResponseKeys.Count] as? String, Int(count)! > 0 else {
-                sendError("No matches",code: 5)
+                sendError("No matches", code: 5)
                 return
             }
             
             /* GUARD: Is "data" key in our result? */
             guard let outerArray = parsedResult[SIClient.NasaResponseKeys.Data]! as? [[String]]
                 else {
-                    sendError("Cannot find key '\(SIClient.NasaResponseKeys.Data)' in \(parsedResult)",code: 6)
+                    sendError("Cannot find key '\(SIClient.NasaResponseKeys.Data)' in \(parsedResult)", code: 6)
                     return
             }
 

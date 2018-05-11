@@ -25,7 +25,6 @@
 		5C7D49CD208CF00400C62419 /* NearbyObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7D49CC208CF00400C62419 /* NearbyObject.swift */; };
 		5C7D49CF208D223600C62419 /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7D49CE208D223600C62419 /* GCDBlackBox.swift */; };
 		5C7D49D1209564AD00C62419 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7D49D0209564AD00C62419 /* PreferencesViewController.swift */; };
-		5CD8A066209E4E77005FFB7D /* README.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 5CD8A065209E4E77005FFB7D /* README.rtf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,7 +48,7 @@
 		5C7D49CC208CF00400C62419 /* NearbyObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyObject.swift; sourceTree = "<group>"; };
 		5C7D49CE208D223600C62419 /* GCDBlackBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDBlackBox.swift; sourceTree = "<group>"; };
 		5C7D49D0209564AD00C62419 /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
-		5CD8A065209E4E77005FFB7D /* README.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = README.rtf; sourceTree = "<group>"; };
+		5C9534F920A5F279006C541E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,9 +97,9 @@
 				5C7D49B8208819B400C62419 /* Main.storyboard */,
 				5C7D49CA208CEB7A00C62419 /* MainTableViewController.swift */,
 				5C1B19962099016600842D9E /* CustomTableViewCell.swift */,
+				5C9534F920A5F279006C541E /* README.md */,
 				5C7D49D0209564AD00C62419 /* PreferencesViewController.swift */,
 				5C1B19A2209A8C4100842D9E /* CountdownCollectionViewController.swift */,
-				5CD8A065209E4E77005FFB7D /* README.rtf */,
 				5C1B19A4209CFCF100842D9E /* CustomCollectionViewCell.swift */,
 				5C7D49BB208819B800C62419 /* Assets.xcassets */,
 				5C7D49BD208819B800C62419 /* LaunchScreen.storyboard */,
@@ -174,7 +173,6 @@
 			files = (
 				5C7D49BF208819B800C62419 /* LaunchScreen.storyboard in Resources */,
 				5C7D49BC208819B800C62419 /* Assets.xcassets in Resources */,
-				5CD8A066209E4E77005FFB7D /* README.rtf in Resources */,
 				5C7D49BA208819B400C62419 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

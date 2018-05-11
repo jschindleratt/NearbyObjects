@@ -43,10 +43,29 @@ class MainTableViewController: UITableViewController, OptionButtonsDelegate {
                     self.tableView.reloadData()
                 }
             } else {
-                self.activityIndicator.stopAnimating()
-                let alert = UIAlertController(title: "Alert", message: "There was a problem retrieving Nearby Object info!", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+                var sMessage: String = ""
+                switch error?.code {
+                case 1  :
+                    sMessage = "Network error."
+                case 2  :
+                    sMessage = "Response code other then 2xx"
+                case 3  :
+                    sMessage = "No data was returned by request"
+                case 4  :
+                    sMessage = "Could not parse JSON"
+                case 5  :
+                    sMessage = "No matches"
+                case 6  :
+                    sMessage = "Could not find key is results."
+                default :
+                    sMessage = ""
+                }
+                performUIUpdatesOnMain {
+                    self.activityIndicator.stopAnimating()
+                    let alert = UIAlertController(title: "Alert", message: "There was a problem retrieving Nearby Object info! \(sMessage)", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
             }
         }
     }
@@ -57,6 +76,7 @@ class MainTableViewController: UITableViewController, OptionButtonsDelegate {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> CustomTableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "objectCell", for: indexPath) as! CustomTableViewCell
+        cell.favoriteBtn.setAttributedTitle(nil, for: .normal)
         let object = objects[(indexPath as NSIndexPath).row]
         cell.lblDistance?.text = "Distance: \(object.dist)"
         if let unwrapped = object.fullname {
@@ -82,14 +102,16 @@ class MainTableViewController: UITableViewController, OptionButtonsDelegate {
             if let result = try? dataController.viewContext.fetch(fetchRequest) {
                 if result.count == 0 {
                     let nearbyOjct = NearbyObjs(context: dataController.viewContext)
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm"
-                    let cd = dateFormatter.date(from:object.cd)
+                    let cd = dateFormatter.date(from: object.cd)
                     nearbyOjct.fullname = unwrapped
                     nearbyOjct.cd = cd! as NSDate
                     nearbyOjct.des = object.des
                     nearbyOjct.dist = (object.dist as NSString).floatValue
-                    try? dataController.viewContext.save()
+                    do {
+                        try dataController.viewContext.save()
+                    } catch {
+                        message = "Pin was not saved (\(error))!"
+                    }
                 } else {
                     message = "Object already in Countdown!"
                 }
@@ -105,4 +127,10 @@ class MainTableViewController: UITableViewController, OptionButtonsDelegate {
             vc.dataController = dataController
         }
     }
+    
+    lazy var dateFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MMM-dd HH:mm"
+        return df
+    }()
 }
